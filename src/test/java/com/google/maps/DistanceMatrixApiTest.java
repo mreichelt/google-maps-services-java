@@ -33,7 +33,7 @@ import java.util.List;
 @Category(MediumTests.class)
 public class DistanceMatrixApiTest {
 
-  private GeoApiContext context = new GeoApiContext().setApiKey("AIzaFakeKey");
+  private GeoApiContext context = new GeoApiContext();
 
   @Test
   public void testLatLngOriginDestinations() throws Exception {

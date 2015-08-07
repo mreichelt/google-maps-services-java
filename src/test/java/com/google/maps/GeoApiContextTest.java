@@ -41,7 +41,6 @@ public class GeoApiContextTest {
 
   private MockWebServer server = new MockWebServer();
   private GeoApiContext context = new GeoApiContext()
-      .setApiKey("AIza...")
       .setQueryRateLimit(500, 0);
 
   private void setMockBaseUrl() {

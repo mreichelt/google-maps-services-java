@@ -32,7 +32,7 @@ import java.util.Arrays;
 public class ElevationApiTest {
 
   private MockWebServer server = new MockWebServer();
-  private GeoApiContext context = new GeoApiContext().setApiKey("AIzaFakeKey");
+  private GeoApiContext context = new GeoApiContext();
 
   private void setMockBaseUrl() {
     context.setBaseUrlForTesting("http://127.0.0.1:" + server.getPort());

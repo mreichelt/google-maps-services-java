@@ -44,7 +44,6 @@ public class GeoApiContext {
   private static final int DEFAULT_BACKOFF_TIMEOUT_MILLIS = 60 * 1000; // 60s
 
   private String baseUrlOverride;
-  private String apiKey;
   private String clientId;
   private UrlSigner urlSigner;
   private final OkHttpClient client = new OkHttpClient();
@@ -102,7 +101,6 @@ public class GeoApiContext {
   private <T, R extends ApiResponse<T>> PendingResult<T> getWithPath(Class<R> clazz,
       FieldNamingPolicy fieldNamingPolicy, String hostName, String path,
       boolean canUseClientId, String encodedPath) {
-    checkContext(canUseClientId);
     if (!encodedPath.startsWith("&")) {
       throw new IllegalArgumentException("encodedPath must start with &");
     }
@@ -110,8 +108,6 @@ public class GeoApiContext {
     StringBuilder url = new StringBuilder(path);
     if (canUseClientId && clientId != null) {
       url.append("?client=").append(clientId);
-    } else {
-      url.append("?key=").append(apiKey);
     }
     url.append(encodedPath);
 
@@ -138,30 +134,12 @@ public class GeoApiContext {
     return new OkHttpPendingResult<T, R>(req, client, clazz, fieldNamingPolicy, errorTimeout);
   }
 
-  private void checkContext(boolean canUseClientId) {
-    if (urlSigner == null && apiKey == null) {
-      throw new IllegalStateException(
-          "Must provide either API key or Maps for Work credentials.");
-    } else if (!canUseClientId && apiKey == null) {
-      throw new IllegalStateException(
-          "API does not support client ID & secret - you must provide a key");
-    }
-    if (urlSigner == null && !apiKey.startsWith("AIza")) {
-      throw new IllegalStateException("Invalid API key.");
-    }
-  }
-
   /**
    * Override the base URL of the API endpoint. Useful only for testing.
    * @param baseUrl  The URL to use, without a trailing slash, e.g. https://maps.googleapis.com
    */
   GeoApiContext setBaseUrlForTesting(String baseUrl) {
     baseUrlOverride = baseUrl;
-    return this;
-  }
-
-  public GeoApiContext setApiKey(String apiKey) {
-    this.apiKey = apiKey;
     return this;
   }
 

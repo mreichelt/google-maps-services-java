@@ -48,23 +48,12 @@ public class AuthenticatedTest {
       return contexts;
     }
 
-   if (System.getenv("API_KEY") != null) {
-      GeoApiContext context = new GeoApiContext()
-          .setApiKey(System.getenv("API_KEY"));
-      contexts.add(new Object[]{context});
-    }
-
     if (supportsClientId
         && (!(System.getenv("CLIENT_ID") == null
             || System.getenv("CLIENT_SECRET") == null))) {
       GeoApiContext context = new GeoApiContext()
           .setEnterpriseCredentials(System.getenv("CLIENT_ID"), System.getenv("CLIENT_SECRET"));
       contexts.add(new Object[]{context});
-    }
-
-    if (contexts.size() == 0) {
-      throw new IllegalArgumentException("No credentials found! Set the API_KEY or CLIENT_ID and "
-          + "CLIENT_SECRET environment variables to run tests requiring authentication.");
     }
 
     return contexts;

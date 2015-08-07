@@ -20,7 +20,6 @@ import static com.google.maps.GeocodingApi.ComponentFilter.country;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -100,24 +99,6 @@ public class GeocodingApiTest extends AuthenticatedTest {
     assertEquals(151.2069902, results[0].geometry.location.lng, EPSILON);
     assertEquals("ChIJP3Sa8ziYEmsRUKgyFmh9AQM", results[0].placeId);
     assertEquals(LocationType.APPROXIMATE, results[0].geometry.locationType);
-  }
-
-  @Test
-  public void testBadKey() throws Exception {
-    GeoApiContext badContext = new GeoApiContext()
-        .setApiKey("AIza.........");
-
-    GeocodingResult[] results = GeocodingApi.newRequest(badContext).address("Sydney")
-        .awaitIgnoreError();
-    assertNull(results);
-
-    try {
-      results = GeocodingApi.newRequest(badContext).address("Sydney").await();
-      assertNull(results);
-      fail("Expected exception REQUEST_DENIED");
-    } catch (Exception e) {
-      assertEquals("The provided API key is invalid.", e.getMessage());
-    }
   }
 
   @Test
