@@ -108,6 +108,8 @@ public class GeoApiContext {
     StringBuilder url = new StringBuilder(path);
     if (canUseClientId && clientId != null) {
       url.append("?client=").append(clientId);
+    } else {
+      url.append("?");
     }
     url.append(encodedPath);
 
